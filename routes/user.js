@@ -1,4 +1,4 @@
-import express, { urlencoded } from "express";
+import express from "express";
 import bcrypt from "bcrypt";
 const router = express.Router();
 import { User } from "../models/User.js";
@@ -14,6 +14,7 @@ import nodemailer from "nodemailer";
 router.post("/signup", async (req, res) => {
   const { firstname, lastname, email, password } = req.body;
   const user = await User.findOne({ email });
+  console.log(firstname, lastname, email, password)
   if (user) {
     return res.json({ message: "User already exist" });
   }
@@ -33,6 +34,7 @@ router.post("/signup", async (req, res) => {
 
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
+  console.log(email)
   let user = await User.findOne({ email });
   if (!user) {
     return res.status(400).send({
