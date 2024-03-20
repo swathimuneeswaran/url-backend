@@ -10,9 +10,18 @@ import cookieParser from "cookie-parser"
 const app=express()
 app.use(express.json())
 app.use(cors({
-    origin:["http://localhost:5173","https://shorteningurl-task.netlify.app"],
-    credentials:true
-}))
+    origin: function(origin, callback) {
+        // Check if the request origin is allowed
+        const allowedOrigins = ["http://localhost:5173", "https://shorteningurl-task.netlify.app"];
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error("Not allowed by CORS"));
+        }
+    },
+    credentials: true
+}));
+
 app.use(cookieParser())
 
 app.get("/",async(req,res)=>
