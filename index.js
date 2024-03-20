@@ -32,10 +32,15 @@ app.use("/auth",UserRouter)
 
 
 const PORT=process.env.PORT
+const MONGO_URL=process.env.MONGO_URL
+console.log(MONGO_URL)
 
-mongoose.connect("mongodb://127.0.0.1:27017/authentication")
 
+const connection=await mongoose.connect(MONGO_URL)
+.then(() => console.log('MongoDB connected'))
+.catch(err => console.error('MongoDB connection error:', err));
 
 app.listen(PORT,()=>{
     console.log(`server is running on ${PORT}`)
 })
+export default connection
